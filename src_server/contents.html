@@ -1,0 +1,43 @@
+<html>
+<head>
+<title> Contents</title>
+</head>
+<body>
+<p align=Center> Here you can manage all the contets!
+</p>
+<p>	
+Add a specific content!
+
+<form action="/content/add" enctype="multipart/form-data" method="post">
+
+position: <input type= "text" name="position"> <br>
+title: <input type= "text" name="title"> <br>
+
+Please specify a file <input type="file" name="file"   >
+
+<div>
+<input type="submit" value="Send" >
+</div>
+</p>
+</form>
+<p>
+
+<form method="get" action=/content/all>
+Show all contents stored <button type= "submit"> Show all</button>
+</form>
+
+</p>
+<p>
+
+<form method="get" action=/>
+Back to the home <button type= "submit"> Home</button>
+</form>
+
+</p>
+
+
+
+
+</form>
+</body>
+</html>

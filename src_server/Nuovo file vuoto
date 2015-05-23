@@ -1,0 +1,15 @@
+region A ---> pos: aaa (enter)    coll1 (id-->luogo)
+aaa (enter)---> {link statico}, {pos:aaaa, info :ogg} coll2 (luogo--> array titoli good)
+
+				ogg:goodmoarning,good aftern
+
+good moarning--->  {type: image, id_ di_mongo}  coll3  (titolo--->
+                     
+   get (pos/id) JSON {type,title,link}
+
+id_ --->image binaria
+
+
+
+
+get (link)

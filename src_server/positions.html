@@ -1,0 +1,49 @@
+<html>
+<head>
+<title> Positions</title>
+</head>
+<body>
+
+<p align=Center> Here you can see all the matching uuid-position and add or remove them!
+</p>
+
+<p>
+<form method="get" action=/position/all>
+Show all positions:  <button type= "submit"> all</button>
+</form>
+</p>
+<!form> <!method="post" action="/position/add">
+<!button type= "submit"> <!Add</button>
+<!form>
+<!uuid <br>
+<!input type="text" name= "uuid">
+<!br>
+<!position <br>
+<!input type="text" name= "position" >
+<!br>
+<p>
+Add new positions:
+<form >
+	 uuid: <input type= "text" name="uuid"> <br>
+	position: <input type= "text" name="position"> 
+	<button type submit" formmethod= "post" formaction="/position/add" > Add</button>
+ </form>
+</p>  
+<p>
+Remove a position: 
+<form >
+	 uuid: <input type= "text" name="uuid">
+	<button type submit" formmethod= "post" formaction="/position/remove" > Remove</button>
+ </form>
+</p>
+<p>
+
+<form method="get" action=/>
+Back to the home <button type= "submit"> Home</button>
+</form>
+
+</p>
+
+
+</body>
+</html>
