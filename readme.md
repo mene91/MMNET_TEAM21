@@ -14,5 +14,5 @@ this app has been built for android 4.4.4 and 4.4.2
 
 in mobile_src/doc is possible to see the documentation used for the beacons detection.
 
-mobile_src isn't the hole project folder, it contains only the index.js (where we wrote the code) and the already build apk!
+mobile_src isn't the hole project folder, it contains only the index.js (where we wrote the code) and the already built apk!
 It was too big to upload the entire folder.
