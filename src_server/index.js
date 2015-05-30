@@ -25,9 +25,14 @@ var mongo= require('mongodb').MongoClient, assert = require('assert');
 
 var BSON = require('mongodb').BSONPure;
 //var uri= process.env.MONGOLAB_URI;
+
+//*********ONLINE DATABASES********* 
 //var uri = "mongodb://admin:admin@ds027521.mongolab.com:27521/firstdb";
 var uri = "mongodb://heroku_app37011580:tb9s93lrjrmn1kh322e41omb2k@ds031952.mongolab.com:31952/heroku_app37011580";
-//var uri = "mongodb://127.0.0.1:27017/firstdb";
+//********************************************************************************************
+
+//LOCAL DATABASE (firstly must be exported and set)
+//var uri = "mongodb://127.0.0.1:27017/heroku_app37011580";
 //*************************
 
 
