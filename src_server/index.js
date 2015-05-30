@@ -21,18 +21,17 @@ var Db = require('mongodb').Db,
     Code = require('mongodb').Code;
 
 /////////////////////////
-//var Grid = require('gridfs-stream');
 var mongo= require('mongodb').MongoClient, assert = require('assert');
 
 var BSON = require('mongodb').BSONPure;
 //var uri= process.env.MONGOLAB_URI;
-var uri = "mongodb://admin:admin@ds027521.mongolab.com:27521/firstdb";
+//var uri = "mongodb://admin:admin@ds027521.mongolab.com:27521/firstdb";
+var uri = "mongodb://heroku_app37011580:tb9s93lrjrmn1kh322e41omb2k@ds031952.mongolab.com:31952/heroku_app37011580";
 //var uri = "mongodb://127.0.0.1:27017/firstdb";
 //*************************
 
 
-var objectArray = [{uuid: 'xxx-yyy-zzz', position: 'muse'}];
-objectArray.push({uuid: 'aaa-bbb-ccc', position: 'school'});
+
 
 
 
@@ -101,7 +100,7 @@ Object.keys(ifaces).forEach(function (ifname) {
   ifaces[ifname].forEach(function (iface) {
 
    if((ifname== 'wlan0')&&(iface.family== 'IPv4'))
-	{//console.log(ifname, iface.address); 
+	{
 
 	ip= iface.address; }
    
@@ -119,9 +118,8 @@ var server = app.listen(process.env.PORT||3000, function () {
 });
 
 	
-//First resolution: respondig with the position given the uuid of the beacon region
-var objectArray = [{uuid: 'xxx-yyy-zzz', position: 'muse'}];
-objectArray.push({uuid: 'aaa-bbb-ccc', position: 'school'});
+
+
 
 //add matching uuid position using browser
 
@@ -152,7 +150,7 @@ mongo.connect (uri,function (err,db)
 		    {
 			    if (err) 
 			    {
-			        //callback(err);
+			        console.log('error');
 			        return;
 			    }
 				    var mydocins =
@@ -163,8 +161,7 @@ mongo.connect (uri,function (err,db)
 						      }
 						      ];
 				    console.log('insert'+mydocins+'\n');
-				    collection.insert(mydocins);//FUNZIONANTE
-				//response.send('new matching added!\n'+JSON.stringify( mydocins )); 
+				    collection.insert(mydocins);
 				collection.find({}).toArray(function(err, results)
 			   {
 			    	
@@ -174,13 +171,9 @@ mongo.connect (uri,function (err,db)
 					    console.log("Doc from Array ");
 					    console.dir(doc);
 text += 'uuid: '+doc.uuid+'<p allign= centre>position: '+ doc.position + '</p><br>';
-					//mtx.position = doc.position;
-					//console.log(mtx.position+ "\n");
 					  });
-					//response.send('new matching added!\n'+JSON.stringify( mydocins )+'\n'+JSON.stringify( results ));
 					text +='</pre>';
 					response.send(text +'</body><html>');
-			    	//return JSON.stringify( results );
 				});
 				
 			
@@ -188,28 +181,6 @@ text += 'uuid: '+doc.uuid+'<p allign= centre>position: '+ doc.position + '</p><b
 				    
 		    });
 		});
-/*
-	for(var i=0;i<objectArray.length;i++){
-	    
-	   if( objectArray[i].uuid == new_uuid){
-	   	
-	   	objectArray[i].position=new_position; updated= true; break;
-	   }
-	
-	}
-	if(!updated){
-		objectArray.push({uuid:new_uuid, position: new_position});
-	}
-	
-	response.contentType('text/html');
-	
-	var text='';
-    for(var i=0;i<objectArray.length;i++){
-    
-      text= text+ '\n'+ 'uuid: ' + objectArray[i].uuid + '  '+  'position:  ' + objectArray[i].position +'<br>';
-    }
-	
-	response.send('new matching added!<br>'+text); */ 
 });
 
 //OK
@@ -241,13 +212,11 @@ text +='</form>uuid-position matching removed!<pre>';
 		    {
 			    if (err) 
 			    {
-			        //callback(err);
 			        return;
 			    }
 				    
-				   // console.log('remove \n');
+				   
 				    collection.remove ({uuid: old_uuid},1);
-				    //collection.insert(mydocins);//FUNZIONANTE
 			collection.find({}).toArray(function(err, results)
 			   {
 			    	
@@ -257,13 +226,10 @@ text +='</form>uuid-position matching removed!<pre>';
 					    console.log("Doc from Array ");
 					    console.dir(doc);
 					text += 'uuid: '+doc.uuid+'<p allign= centre>position: '+ doc.position + '</p><br>';
-					//mtx.position = doc.position;
-					//console.log(mtx.position+ "\n");
-					  });
-					//response.send('uuid:'+old_uuid+' removed!\n'+JSON.stringify( results ));
+										  });
 					text +='</pre>';
 					response.send(text +'</body><html>');
-			    	//return JSON.stringify( results );
+			    	
 				});
 
 				    
@@ -271,30 +237,9 @@ text +='</form>uuid-position matching removed!<pre>';
 		});    
 	
 	
-	//response.send('uuid:'+old_uuid+' removed!\n');  
+	  
 
 
-/*	var old_uuid =req.body.uuid;
-	
-	var updated= false;
-	for(var i=0;i<objectArray.length;i++){
-	    
-	   if( objectArray[i].uuid == old_uuid){
-	   	
-	   	objectArray.splice(i, 1); break;
-	   }
-	
-	}
-	response.contentType('text/html');
-	
-	var text='';
-    for(var i=0;i<objectArray.length;i++){
-    
-      text= text+ '<br>'+ 'uuid: ' + objectArray[i].uuid + '  '+  'position:  ' + objectArray[i].position +'<br>';
-    }
-	
-	response.send('matching removed!\n'+text);  
-*/
 });
 //OK
 //display all the matching
@@ -332,13 +277,10 @@ mongo.connect (uri,function (err,db)
 					    console.log("Doc from Array ");
 					    console.dir(doc);
 						text += 'uuid: '+doc.uuid+'<p allign= centre>position: '+ doc.position + '</p><br>';
-					//mtx.position = doc.position;
-					//console.log(mtx.position+ "\n");
 					  });
 					text +='</pre>';
 					response.send(text +'</body><html>');
 					
-			    	//return JSON.stringify( results );
 				});
 				
 			});
@@ -347,38 +289,15 @@ mongo.connect (uri,function (err,db)
 
 
 
-/*
-    for(var i=0;i<objectArray.length;i++){
-    
-      text= text+ '\n'+ 'uuid: ' + objectArray[i].uuid + '  '+  'position:  ' + objectArray[i].position +'<br>';
-    }
-	
-	response.send(text);  
-*/
 });
 
+// resolution: return position,type,title,message,id,link of a content from one uuid
 
-//gives the position related to that uuid
 app.get('/position/:uuid', function (req, response) {
    
 
-/*var uuid = (req.params.uuid);
-       console.log(req.url);
-   response.contentType('application/json');
-   
-   
-   
-   
-
-     var obj = 
-    { type: 'image', title: 'immagine', link: 'http://'+ip+':'+port+'/database/images/scarpe3.jpg' };
-  
-     var objJSON = JSON.stringify(obj);
-   	response.send(objJSON); */
 
 var _uuid = (req.params.uuid);
-//var _find=_uuid;
-   	//var mtx =[{uuid: '', position: '',info : ''}];
    	response.contentType('application/json');
 	console.log('/position/'+_uuid+'\n');
 temp = "undefined";
@@ -387,7 +306,8 @@ var selected_title; var typeF; var idF;
 var imageid="undefined",audioid="undefined",videoid="undefined";
 var cuttitle;
 
-mongo.connect (uri,function (err,db)
+		//MATCHING UUID - POSITION
+		mongo.connect (uri,function (err,db)
 		{
 			
 			if (err)
@@ -407,17 +327,17 @@ mongo.connect (uri,function (err,db)
 			   collection.find({uuid: _uuid}).toArray(function(err, results)
 			   {
 			    	
-					//console.log(results+ "\n");
 					
-					results.forEach(function(doc) //multiplexing
+					results.forEach(function(doc) 
 					{
-					    console.log("uuid: "+ _uuid+"\n");
-					    console.dir(doc);
-					temp1 = doc;
-posF=temp1.position;
-					console.log("position Fin: "+JSON.stringify(posF)+ "\n");
-					db.close();
+						console.log("uuid: "+ _uuid+"\n");
+						console.dir(doc);
+						temp1 = doc;
+						posF=temp1.position;
+						console.log("position Fin: "+JSON.stringify(posF)+ "\n");
+						db.close();
 					});
+		//MATCHING POSITION - TITLES
 		mongo.connect (uri,function (err,db)
 		{
 			
@@ -440,48 +360,50 @@ posF=temp1.position;
 			   {
 			    	
 			    			posF=temp1.position;
-					//console.log(results+ "\n");
 					
 					results.forEach(function(doc) {
 					    console.log("find position: "+ temp1.position+"\n");
 					    console.dir(doc);temp = doc;
-cuttitle=temp.title.split('_')[0];//tolgo la seconda parte del titolo es: goodmorning_enter
-//matching in base all' ora***********
-	if(temp1.position=="entrance" ||temp1.position=="exit")
-{				
-var date = new Date();
-var current_hour = date.getHours();
-var text;
-if(current_hour>=5 && current_hour<12)   {/*"Buongiorno"*/;if(cuttitle=="goodmorning"){selected_title=temp.title;    console.log("titolo:   mattinaaaaa");};}
-if(current_hour>=12 && current_hour<17)   {if(cuttitle=="goodafternoon"){selected_title=temp.title;console.log("titolo:   pome");}}
-if(current_hour>=17 && current_hour<=23)   {if(cuttitle=="goodevening"){selected_title=temp.title;console.log("titolo:   sera");}}
-if(current_hour>=0 && current_hour<5)   {if(cuttitle=="goodnigth"){selected_title=temp.title;console.log("titolo:   notte");}}
-}
-//**********************
-//Matching in base al numero di quert
-else
-{ if(temp1.position=="left" || temp1.position=="right")
-  {     console.log("left or right!!!!!");
-	if(n_query<N_QUERY_OFFERT)  //devo mandare un prodotto
-	{  console.log("query ok\n\n"+temp.title); 
-	  if(cuttitle=="products")
-		{selected_title=temp.title; console.log("prodotto \n"); n_query++;}	
-	}
-	else  //mando l' offerta speciale e azzero il contatore
-	{
-		 if(cuttitle=="offers")
-		{selected_title=temp.title; console.log("Offerta speciale \n"); n_query=0;}	
+		cuttitle=temp.title.split('_')[0];//tolgo la seconda parte del titolo es: goodmorning_enter
+		//matching in base all' ora***********
+			if(temp1.position=="entrance" ||temp1.position=="exit")
+		{				
+		var date = new Date();
+		var current_hour = date.getHours();
+		var text;
+		if(current_hour>=5 && current_hour<12)   {/*"Buongiorno"*/;if(cuttitle=="goodmorning"){selected_title=temp.title;    console.log("titolo:   mattinaaaaa");};}
+		if(current_hour>=12 && current_hour<17)   {if(cuttitle=="goodafternoon"){selected_title=temp.title;console.log("titolo:   pome");}}
+		if(current_hour>=17 && current_hour<=23)   {if(cuttitle=="goodevening"){selected_title=temp.title;console.log("titolo:   sera");}}
+		if(current_hour>=0 && current_hour<5)   {if(cuttitle=="goodnigth"){selected_title=temp.title;console.log("titolo:   notte");}}
+		}
+		//**********************
+		//Matching in base al numero di query
+		else
+		{ if(temp1.position=="left" || temp1.position=="right")
+		  {     console.log("left or right!!!!!");
+			if(n_query<N_QUERY_OFFERT)  //devo mandare un prodotto
+			{  console.log("query ok\n\n"+temp.title); 
+			  if(cuttitle=="products")
+				{selected_title=temp.title; console.log("prodotto \n"); n_query++;}	
+			}
+			else  //mando l' offerta speciale e azzero il contatore
+			{
+				 if(cuttitle=="offers")
+				{selected_title=temp.title; console.log("Offerta speciale \n"); n_query=0;}	
 		
-	}
+			}
 
 
-  }
- else
- {selected_title=temp.title}
-}
+		  }
+		 else
+		 {selected_title=temp.title}
+		}
 				
-					console.log(".title: "+JSON.stringify(selected_title)+ "\n");
-							db.close();});
+							console.log(".title: "+JSON.stringify(selected_title)+ "\n");
+									db.close();});
+
+
+		//MATCHING TITLE - CONTENTS
 		mongo.connect (uri,function (err,db)
 		{
 			
@@ -499,16 +421,12 @@ else
 			    {
 			        console.log('error');
 			    }
-			  // console.log("mtx.info: "+JSON.stringify(temp.info)+ "\n");
 //info->title!!!
 			   collection.find({title: selected_title}).toArray(function(err, results)
 			   {
 			    	
 					for (var i=0;i<results.length;i++)
 					{
-						//console.log("for: "+i+ "\n");						
-						//console.log(JSON.stringify(results[i])+ "\n");
-						//console.log("type: "+JSON.stringify(results[i].type)+ "\n");
 						if (results[i].type=="image")
 						{
 							arrimage.push(results[i].imgId);
@@ -574,7 +492,7 @@ if(posF=="left" || posF=="right")
 
 
 
-					var obj = 		//image+audio+video //linkimgage + linkaudio      //contentimage/
+					var obj = 		 //linkimgage + linkaudio      
 					  	{ position: posF,type : "image+audio",title:titolo, msg:message,img:imageid,
 						linkimage :"http://"+ip+":"+port+"/contentimage/"+imageid ,
 						linkaudio :"http://"+ip+":"+port+"/contentaudio/"+audioid};
@@ -609,44 +527,22 @@ if(posF=="left" || posF=="right")
 				}
 					
 					
-/*
-					    results.forEach(function(doc) {//many doc choose rnd
-					    console.log("info: "+temp.title+"\n");
-					    console.dir(doc);
-					temp = doc;});
-typeF=temp.type;
-idF=temp.imgId;
-					console.log("mtx.imgid: "+JSON.stringify(temp.imgId)+ "\n");
-var obj = 		//image+audio+video 		//linkimgage + linkaudio         	//contentimage/
-    { position: posF,type : typeF,title:infoF,img:idF,link :"http://"+ip+":"+port+"/content/"+idF};
-*/
-//console.log("mtx.imgid: "+JSON.stringify(obj)+ "\n");
 response.send(JSON.stringify( obj ));
-//return JSON.stringify( obj );
 db.close();
 					  
-					//response.send(JSON.stringify( obj ));
 					
-			    	//return JSON.stringify( obj );
 				
 				
 			
 		
 		});
 					  });
-					//response.send(JSON.stringify( results ));
-					//db.close();
-			    	//return JSON.stringify( results );
 				});
 				
 			});
 		
 		});
-				//return temp1.position;
 					  });
-					//response.send(JSON.stringify( results ));
-					//db.close();
-			    	//return JSON.stringify( obj );
 				});
 				
 			});
@@ -660,89 +556,22 @@ db.close();
 });
 
 
-/*app.get('/position/:uuid', function (req, response) {
-   var uuid = (req.params.uuid);
-       console.log(req.url);
-   response.contentType('application/json');
-   
-   
-   //matching uuid position (static)
-   var i; var pos='unknown';
-   for(i=0;i<objectArray.length;i++){
-   	
-   		if(objectArray[i].uuid==uuid){
-   				pos= objectArray[i].position; break;
-   		}
-   	
-   }
-
-     var obj = 
-    { position: pos};
-  
-     var objJSON = JSON.stringify(obj);
-   	response.send(objJSON);    
-});
-*/	
 	
 
 
 
-//Second resolution: 	given the position, respondig with the JSON object, containing the information about the content and the link to it (to the database)
-//var positionContent = [{position: 'muse', tipo: 'immagine', link: 'http://192.168.1.66:50306/Database/image_data'}];
-
-
-var Database = [{position:'null', content: [{type: 'image', link: 'http://'+ip+':'+port+ '/database/images/image1'}] }];
-
-/*
-app.get('/content/all', function(request, response) {
-	response.contentType('text/html');
-console.log(request.url);
-var text='';
-	for(var j= 0; j<Database.length; j++){
-		
-		text = text + '\nposition: '+ Database[j].position +'\n\n';
-    for(var i=0;i<Database[j].content.length;i++){
-    
-      text= text+ 'type:  ' + Database[j].content[i].type + '\t link: ' + Database[j].content[i].link + '\n';
-    }
-	}
-	response.send(text);  
-
-
-});*/
-/*
-app.get('/content/all', function(request, response) {
-	response.contentType('text/html');
-console.log(request.url);
-//writing html rensponse: button home
-var text='<html><head><title> Contents</title></head><body> <p><form method="get" action=/>Back to the home <button type= "submit"> Home</button></form>';
-//contents button
-text += '<form method = "get" action=/config/contents.html>Configure Contents: <button type= "submit" >Contents</button></form>';
-//confirm script
-text += '</p><script type="text/javascript" language="JavaScript">';
-text+='function AskAndSubmit(t){  var answer = confirm("Are you sure you want to remove this content?");  if (answer)  {    t.form.submit();  }}</script>';
 
 
 
 
-	for(var j= 0; j<Database.length; j++){
-		
-		text = text + '<br>position: '+ Database[j].position +'<br><br>';
-    	
-	for(var i=0;i<Database[j].content.length;i++){
-    
-      text= text+ '<a href="/content/remove/:id" onclick="AskAndSubmit(this)"> <img src= "http://'+Database[j].content[i].link +'"'+" style=width:304px >   "+Database[j].content[i].type+"   </a>";
-    }
-	}
-response.send(text+ '</body><html>');  
 
 
-});*/
+//resolution: get the selected content audio/image/video by id
 //content/id
 //ok
-app.get('/contentimage/:position', function(request, response) {
+app.get('/contentimage/:id', function(request, response) {
 	console.log(request.url);
-	var position= request.params.position;
+	var id= request.params.id;
 	var found= false;
 	response.contentType('image/jpeg');
 	
@@ -751,7 +580,7 @@ app.get('/contentimage/:position', function(request, response) {
 mongo.connect (uri,function (err,db)
 	{
 		console.log("read\n");		
-		_id = new ObjectID(position);
+		_id = new ObjectID(id);
 		var gridStore = new GridStore(db, _id, 'r');
 		gridStore.open(function (err, gridStore) 
 		{
@@ -770,9 +599,9 @@ mongo.connect (uri,function (err,db)
 	
 	
 });
-app.get('/contentaudio/:position', function(request, response) {
+app.get('/contentaudio/:id', function(request, response) {
 	console.log(request.url);
-	var position= request.params.position;
+	var id= request.params.id;
 	var found= false;
 	response.contentType('audio/mp3');
 	
@@ -781,7 +610,7 @@ app.get('/contentaudio/:position', function(request, response) {
 mongo.connect (uri,function (err,db)
 	{
 		console.log("read\n");		
-		_id = new ObjectID(position);
+		_id = new ObjectID(id);
 		var gridStore = new GridStore(db, _id, 'r');
 		gridStore.open(function (err, gridStore) 
 		{
@@ -800,9 +629,9 @@ mongo.connect (uri,function (err,db)
 	
 	
 });
-app.get('/contentvideo/:position', function(request, response) {
+app.get('/contentvideo/:id', function(request, response) {
 	console.log(request.url);
-	var position= request.params.position;
+	var id= request.params.id;
 	var found= false;
 	response.contentType('video/mp4');
 	
@@ -811,7 +640,7 @@ app.get('/contentvideo/:position', function(request, response) {
 mongo.connect (uri,function (err,db)
 	{
 		console.log("read\n");		
-		_id = new ObjectID(position);
+		_id = new ObjectID(id);
 		var gridStore = new GridStore(db, _id, 'r');
 		gridStore.open(function (err, gridStore) 
 		{
@@ -831,47 +660,6 @@ mongo.connect (uri,function (err,db)
 	
 });
 
-/*
-//old
-app.get('/content/:position', function(request, response) {
-	console.log(request.url);
-	var position= request.params.position;
-	var found= false;
-	response.contentType('application/json');
-	
-	
-	for(var j=0;j<Database.length;j++)
-	{
-		
-     if(Database[j].position== position){		
-	
-  				var max= Database[j].content.length -1;
-  				
-  				
-  				var i = Math.round(Math.random()* max);  //scelta random del contenuto
-			var obj = 
-    			{ type: Database[j].content[i].type, link: Database[j].content[i].link};
-  
-    			 var objJSON = JSON.stringify(obj);
-   
-   
-  					response.send(objJSON); found = true; break;
-		//}
-	}}
-	if(!found){
-		var obj = 
-    			{ type: 'unknown', link: 'unknown' };
-  
-    			 var objJSON = JSON.stringify(obj);
-   
-   
-  					response.send(objJSON);
-		
-	}
-	//}
-	
-});
-*/
 
 app.post('/settings', function(request, response) {
 console.log(request.url);	
@@ -885,8 +673,7 @@ app.post('/content/add', function(request, response) {
 console.log(request.url);
 		var new_position= request.body.position;
 		var new_title=request.body.title;
-	var new_type= '';// request.body.type;
-	//var new_link= request.body.link; 
+	var new_type= '';
 console.log(request.files.file);
 	if(typeof request.files.file === 'undefined')
 {
@@ -916,10 +703,7 @@ console.log(request.files.file);
 }
         
         new_link=ip+':'+port+local_path;
-       //save the file
-	/*fs.readFile(file, function (err, data) {
-        fs.writeFile('.'+local_path, data);
-     });*/
+       
 	mongo.connect (uri,function (err,db)
 	{
 
@@ -929,7 +713,6 @@ console.log(request.files.file);
 				return;
 			}			
 			var fileId = new ObjectID();
-			//var path = '/home/stn/database/images/'+new_img+'.jpg';
 
 		  // Open a new file
 		  var gridStore = new GridStore(db, fileId, 'w');
@@ -954,7 +737,6 @@ console.log(request.files.file);
 			assert.equal(fileSize, fileData.length);
 			console.log("image add: "+/*new_img*/+"\n");			
 			console.log("id: "+fileId+"\n");
-			//response.send(fileData);
 			db.close();
 
 /////////////////////////////////////////////////////////////////////
@@ -984,12 +766,7 @@ mongo.connect (uri,function (err,db)
 						      }
 						      ];
 				    console.log('insert'+JSON.stringify(mydocins)+'\n');
-/*
-insert coll 3
-if (pos=new) add col1e2
-(pos==gia esistente) guardo titolo
-*/
-				    collection.insert(mydocins);//FUNZIONANTE
+				    collection.insert(mydocins);
 				db.close();
 ///////////////////////////////////////////////////////////////
 		mongo.connect (uri,function (err,db)
@@ -1088,14 +865,13 @@ if (pos=new) add col1e2
 						      }
 						      ];
 					    console.log('no po results\n insert'+JSON.stringify(mydocins)+'\n');
-					    collection.insert(mydocins);//FUNZIONANTE
+					    collection.insert(mydocins);
 						
 					}
 					
 					
 						
 					db.close();
-			    	db.close();
 				});
 				
 			});
@@ -1103,10 +879,7 @@ if (pos=new) add col1e2
 		});
 
 			});
-					//response.send(JSON.stringify( results ));
-					//db.close();
-			    	//return JSON.stringify( results );
-		});
+							});
 		
 ////////////////////////////////////////////////////////////////////
 
@@ -1145,7 +918,6 @@ function confirmAction(){
 //content/removebyid 
 app.get('/content/remove/:id', function(request, response) {
 	console.log(request.url);
-	//var old_position= request.body.position;
 	var _id= request.params.id;
 
                 mongo.connect (uri,function (err,db)
@@ -1228,41 +1000,8 @@ app.get('/content/remove/:id', function(request, response) {
 
 
 	
-	/*for(var i=0;i<Database.length;i++){
-	    
-	   if( Database[i].position == old_position){
-	   	
-	   		
-	   		for(var j= 0; j < Database[i].content.length; j++){
-	   			
-	   			if(Database[i].content[j].link == old_link){
-	   				
-	   				Database[i].content.splice(j,1); 
-	   				if(Database[i].content.length==0)
-	   				{
-	   					Database.splice(i,1);
-	   				}
-	   				break;
-	   			}
-	   		}
-	   }
-	
-	}*/
-	
-	/*local_path='.'+local_path;
-	fs.unlinkSync(local_path);
-	response.contentType('text/cmd');
-	
-	var text='';
-	for(var j= 0; j<Database.length; j++){
 		
-		text = text + '\nposition: '+ Database[j].position +'\n\n';
-    for(var i=0;i<Database[j].content.length;i++){
-    
-      text= text+ 'tipo:  ' + Database[j].content[i].type + '\t link: ' + Database[j].content[i].link + '\n';
-    }
-	}*/
-var text='<html><head><title> Content Removed!</title></head><body> <p><form method="get" action=/>Back to the home <button type= "submit"> Home</button></form>';
+	var text='<html><head><title> Content Removed!</title></head><body> <p><form method="get" action=/>Back to the home <button type= "submit"> Home</button></form>';
 //contents button
 text += '<form method = "get" action=/config/contents.html>Configure Contents: <button type= "submit" >Contents</button></form><br>';
 text +='<form method="get" action=/content/all>Show all contents stored <button type= "submit">';
@@ -1281,54 +1020,10 @@ text +=' Show all</button></form>';
 
 
 //Third Resolution: DATABASE!!! Responding to the user sending the wanted content
-app.get('/database/:folder/:name', function(request, response) {
-	console.log(request.url);
-	var folder= request.params.folder;
-	var name= request.params.name;
-	var ok= false;
-	
-	if(folder== 'images'){
-
-		response.contentType('image/jpeg');
-		var img = fs.readFileSync('./database/images/'+name);   //the extension cannot be included in the link otherwise android can't open it!'
-		 response.send(img); ok=true;
-	}
-		
-	if(folder =='audios'){
-		
-		response.contentType('audio/vnd.wave');
-		var readStream = fs.createReadStream('./database/audios/'+name);
-		readStream.pipe(response); ok=true;
-	}
-	
-	
-	  if(folder == 'videos'){
-  	   response.contentType('video/mp4');
-		var readStream = fs.createReadStream('./database/videos/' +name);
-  		readStream.pipe(response); ok= true;
-  }
-	
-	if(!ok){
-	response.contentType ('text/cmd');
-	response.send('error');  
-	}
-
-});
 
 
-app.get('/image_data', function(request, response) {
-  // We want to set the content-type header so that the browser understands
-  //  the content of the response.
-  console.log(request.url);
-   response.contentType('image/jpeg');
-
-  // Normally, the would probably come from a database, but we can cheat:
-  var img = fs.readFileSync('./tettepertutti.jpg');
-
-  // Now, we can use the response object's send method to push that string
-  //  of people J,SON back to the browser in response to this request:
-  response.send(img);
-});
+//app.get('/image_data') REMOVED
+//app.get('/database/:folder/:name') REMOVED
 
 
 
